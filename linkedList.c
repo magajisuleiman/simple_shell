@@ -54,7 +54,7 @@ list_t *add_end_node(list_t **head, char *str)
 		return (NULL);
 
 	(*new_node).var = _strdup(str);
-	(*new_node).var = NULL;
+	(*new_node).next = NULL;
 
 	holder = *head;
 	if (holder != NULL)
@@ -80,33 +80,33 @@ list_t *add_end_node(list_t **head, char *str)
  */
 int delete_nodeint_at_index(list_t **head, int index)
 {
-	list_t *n_head;
-	list_t *holder;
+	list_t *n_heads;
+	list_t *holders;
 	int counter = 0;
 
 	if (*head == NULL)
 		return (-1);
 	if (index == 0)
 	{
-		holder = (*head)->next;
+		holders = (*head)->next;
 		free((*head)->var);
 		free(*head);
-		*head = holder;
+		*head = holders;
 		return (1);
 	}
 	counter = 1;
-	n_head = *head;
+	n_heads = *head;
 	while (counter < index)
 	{
-		if (n_head == NULL)
+		if (!n_heads)
 			return (-1);
-		n_head = n_head->next;
+		n_heads = (*n_heads).next;
 		counter++;
 	}
-	holder = n_head->next;
-	n_head->next = holder->next;
-	free(holder->var);
-	free(holder);
+	holders = (*n_heads).next;
+	(*n_heads).next = (*holders).next;
+	free((*holders).var);
+	free(holders);
 	return (1);
 }
 
@@ -116,14 +116,14 @@ int delete_nodeint_at_index(list_t **head, int index)
  */
 void free_linked_list(list_t *list)
 {
-	list_t *holder;
+	list_t *holders;
 
 	while (list != NULL)
 	{
-		holder = list;
+		holders = list;
 		list = (*list).next;
-		free((*holder).var);
-		free(holder);
+		free((*holders).var);
+		free(holders);
 	}
 
 }
